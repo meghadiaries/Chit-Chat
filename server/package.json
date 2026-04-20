@@ -14,16 +14,11 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
+    "mongodb": "^7.1.1",
     "mongoose": "^6.2.1",
     "socket.io": "^4.4.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
-  }
-}
-{
-  "main": "utils/index.js",
-  "scripts": {
-    "start": "node utils/index.js"
   }
 }
