@@ -12,6 +12,9 @@ A full-stack real-time chat application built using React, Node.js, Express, and
 * 🖼️ Avatar selection for users
 * 📱 Responsive UI design
 * 🚪 Logout functionality
+<img width="2503" height="1176" alt="Screenshot 2026-04-20 195736" src="https://github.com/user-attachments/assets/5b828f2f-f86d-4104-9f9c-181bc7692ebe" />
+<img width="2501" height="1169" alt="Screenshot 2026-04-20 195747" src="https://github.com/user-attachments/assets/e2cf116d-fc4f-4bf0-ac56-d072c6587d83" />
+<img width="2483" height="1189" alt="Screenshot 2026-04-20 195725" src="https://github.com/user-attachments/assets/8e2c27a3-4e31-4579-ba2c-6e9cc8358590" />
 
 ---
 
