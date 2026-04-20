@@ -8,8 +8,7 @@ require("dotenv").config();
 
 const app = express();
 
-// --- 1. CORS CONFIGURATION ---
-// This allows your Vercel frontend to talk to this Railway backend
+// --- THE FIX: Updated CORS for Vercel ---
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://chit-chat-five-phi.vercel.app"],
@@ -19,7 +18,15 @@ app.use(
 
 app.use(express.json());
 
-// --- 2. DATABASE CONNECTION ---
+// --- ROUTES ---
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
+
+app.get("/ping", (_req, res) => {
+  return res.json({ msg: "Backend is Live!" });
+});
+
+// --- DATABASE CONNECTION ---
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -32,21 +39,12 @@ mongoose
     console.log("DB Connection Error: ", err.message);
   });
 
-// --- 3. ROUTES ---
-app.get("/ping", (_req, res) => {
-  return res.json({ msg: "Ping Successful - Backend is Live!" });
-});
-
-app.use("/api/auth", authRoutes);
-app.use("/api/messages", messageRoutes);
-
-// --- 4. SERVER INITIALIZATION ---
+// --- SERVER START ---
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on port ${process.env.PORT}`)
 );
 
-// --- 5. SOCKET.IO SETUP ---
-// We also need to allow the Vercel URL here for the real-time chat
+// --- SOCKET.IO FIX ---
 const io = socket(server, {
   cors: {
     origin: ["http://localhost:3000", "https://chit-chat-five-phi.vercel.app"],
@@ -58,7 +56,6 @@ global.onlineUsers = new Map();
 
 io.on("connection", (socket) => {
   global.chatSocket = socket;
-  
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id);
   });
