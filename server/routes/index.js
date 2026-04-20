@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const authRoutes = require("./routes/auth");
-const messageRoutes = require("./routes/messages");
+// FIXED: Changed "./routes/..." to "./..." because we are already in the routes folder
+const authRoutes = require("./auth"); 
+const messageRoutes = require("./messages");
 const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
@@ -16,7 +17,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("DB Connetion Successfull");
+    console.log("DB Connection Successful");
   })
   .catch((err) => {
     console.log(err.message);
@@ -29,12 +30,15 @@ app.get("/ping", (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-const server = app.listen(process.env.PORT, () =>
-  console.log(`Server started on ${process.env.PORT}`)
+// FIXED: Ensure Railway can find the port
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT, () =>
+  console.log(`Server started on ${PORT}`)
 );
+
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*", // Changed for deployment flexibility
     credentials: true,
   },
 });
