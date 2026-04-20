@@ -8,6 +8,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-app.get('/', (req, res) => {
-  res.send('Server is running from src/utils!');
-});
