@@ -1,14 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const authRoutes = require("./routes/auth"); 
-const messageRoutes = require("./routes/messages"); 
 const socket = require("socket.io");
 require("dotenv").config();
 
+// Fix: Since index.js is INSIDE /routes, 
+// we just use "./auth" instead of "./routes/auth"
+const authRoutes = require("./auth"); 
+const messageRoutes = require("./messages"); 
+
 const app = express();
 
-// CORS set to allow everything for now to ensure the connection works
+// Allow all origins to fix the CORS issue immediately
 app.use(cors({
   origin: "*", 
   credentials: true
@@ -16,32 +19,27 @@ app.use(cors({
 
 app.use(express.json());
 
-// API Routes
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-// Test route to check connection in browser
 app.get("/ping", (_req, res) => {
-  return res.json({ msg: "Success! Backend is online." });
+  return res.json({ msg: "Backend is finally connected!" });
 });
 
-// Database Connection
+// DB Connection
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connection Successful"))
   .catch((err) => console.log("DB Error: ", err.message));
 
-// Use the port Railway provides, or 5000 as a backup
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () =>
   console.log(`Server started on port ${PORT}`)
 );
 
-// Socket.io initialization
 const io = socket(server, {
-  cors: {
-    origin: "*",
-  },
+  cors: { origin: "*" },
 });
 
 global.onlineUsers = new Map();
