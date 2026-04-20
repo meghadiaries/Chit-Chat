@@ -10,16 +10,6 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/messages", messageRoutes);
-
-// The /ping route we used to test earlier
-app.get("/ping", (req, res) => {
-  res.json({ message: "Backend is Live and Running!" });
-});
-
-// Database Connection
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -32,14 +22,19 @@ mongoose
     console.log(err.message);
   });
 
-const server = app.listen(process.env.PORT, () =>
-  console.log(`Server started on port ${process.env.PORT}`)
-);
+app.get("/ping", (_req, res) => {
+  return res.json({ msg: "Ping Successful" });
+});
 
-// Socket.io Setup (Crucial for Chat)
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
+
+const server = app.listen(process.env.PORT, () =>
+  console.log(`Server started on ${process.env.PORT}`)
+);
 const io = socket(server, {
   cors: {
-    origin: "*", // Allows your Vercel frontend to connect
+    origin: "http://localhost:3000",
     credentials: true,
   },
 });
