@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Backend for real-time chat app",
   "main": "index.js",
-  "scripts": {
-  "start": "node public/src/utils/index.js",
-  "dev": "nodemon public/src/utils/index.js"
+ "scripts": {
+  "start": "node server/routes/index.js",
+  "dev": "nodemon server/routes/index.js"
 },
   "author": "Megha Bhattacharjee",
   "license": "ISC",
